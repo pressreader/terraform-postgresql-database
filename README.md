@@ -24,8 +24,9 @@ module "database" {
   # Defaults to []
   grants = [
     {
-      role       = "public"
-      privileges = [] # Revoke all privileges from public
+      description = "REVOKE ALL FROM DATABASE"
+      role        = "public"
+      privileges  = []
     }
   ]
 }

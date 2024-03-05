@@ -14,13 +14,7 @@ resource "postgresql_database" "main" {
 }
 
 resource "postgresql_grant" "name" {
-  for_each = {
-    for v in var.grants :
-    length(v["privileges"]) != 0 ?
-    "${v["role"]} | ${v["privileges"]}" :
-    "${v["role"]} | REVOKE"
-    => v
-  }
+  for_each = {for v in var.grants : v.description => v}
 
   database    = postgresql_database.main.name
   object_type = "database"
