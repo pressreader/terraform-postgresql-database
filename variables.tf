@@ -53,12 +53,14 @@ variable "lc_ctype" {
 
 variable "grants" {
   description = <<EOT
-  <br><b>role:</b> The name of the role to grant privileges on, Set it to "public" for all roles. Defaults to null.
-  <br><b>privileges:</b> The list of privileges to grant. There are different kinds of privileges: CREATE, CONNECT and TEMPORARY. An empty list could be provided to revoke all privileges for this role. Defaults to null.
+  <br><b>description:</b> Description of privileges.
+  <br><b>role:</b> The name of the role to grant privileges on, Set it to "public" for all roles.
+  <br><b>privileges:</b> The list of privileges to grant. There are different kinds of privileges: CREATE, CONNECT and TEMPORARY. An empty list could be provided to revoke all privileges for this role.
 EOT
   type        = list(object({
-    role       = optional(string)
-    privileges = optional(list(string))
+    description = string
+    role        = string
+    privileges  = list(string)
   }))
   default = []
 
