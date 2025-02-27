@@ -6,9 +6,13 @@ variable "name" {
 variable "owner" {
   description = "The role name of the user who will own the database, or DEFAULT to use the default (namely, the user executing the command). To create a database owned by another role or to change the owner of an existing database, you must be a direct or indirect member of the specified role, or the username in the provider is a superuser. Defaults to null."
   type        = string
-  default     = null
+  default     = "pradmin"
 }
 
+variable "tablespace_name" {
+  type    = string
+  default = "pg_default"
+}
 variable "connection_limit" {
   description = "How many concurrent connections can be established to this database. -1 means no limit. Defaults to -1."
   type        = number
@@ -57,7 +61,7 @@ variable "grants" {
   <br><b>role:</b> The name of the role to grant privileges on, Set it to "public" for all roles.
   <br><b>privileges:</b> The list of privileges to grant. There are different kinds of privileges: CREATE, CONNECT and TEMPORARY. An empty list could be provided to revoke all privileges for this role.
 EOT
-  type        = list(object({
+  type = list(object({
     description = string
     role        = string
     privileges  = list(string)
@@ -66,7 +70,7 @@ EOT
 
   validation {
     condition = alltrue(flatten([
-      for k in var.grants :flatten([for v in k["privileges"] : contains(["CONNECT", "TEMPORARY", "CREATE"], v)])
+      for k in var.grants : flatten([for v in k["privileges"] : contains(["CONNECT", "TEMPORARY", "CREATE"], v)])
     ]))
     error_message = "The privileges value must be one of CONNECT, TEMPORARY or CREATE."
   }
