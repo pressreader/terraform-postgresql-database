@@ -1,6 +1,7 @@
 resource "postgresql_database" "main" {
-  name  = var.name
-  owner = var.owner
+  name            = var.name
+  owner           = var.owner
+  tablespace_name = var.tablespace_name
 
   connection_limit  = var.connection_limit
   allow_connections = var.allow_connections
@@ -14,7 +15,7 @@ resource "postgresql_database" "main" {
 }
 
 resource "postgresql_grant" "name" {
-  for_each = {for v in var.grants : v.description => v}
+  for_each = { for v in var.grants : v.description => v }
 
   database    = postgresql_database.main.name
   object_type = "database"
